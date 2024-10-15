@@ -1,0 +1,2 @@
+SECRET_KEY = "secret"
+FLASK_DEBUG = 1 
