@@ -1,0 +1,73 @@
+body {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+nav ul {
+        list-style-type: none;
+        padding: 0;
+        display: flex;
+        justify-content: space-around;
+        background-color: #333;
+    }
+
+    nav ul li {
+        display: inline;
+    }
+
+    nav ul li a {
+        text-decoration: none;
+        color: white;
+        padding: 14px 20px;
+        display: block;
+        transition: background-color 0.3s ease;
+    }
+    
+
+    nav ul li a:hover {
+        background-color: #575757;
+    }
+
+    section h2 {
+        color: #333;
+        border-bottom: 2px solid #eaeaea;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    
+    /* Стилі секцій */
+    section {
+        /*margin-top: 50px;*/
+        padding: 20px 0;
+        background-color: #fafafa;
+        border-radius: 0px;
+        
+    }
+    
+    /* Стилізація списку навичок */
+    ul {
+        list-style-type: square;
+        padding-left: 20px;
+    }
+    
+    /* Стиль для зображення */
+    header img {
+        max-width: 250px;
+        border-radius: 50%;
+        display: block;
+        margin: 20px auto;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }

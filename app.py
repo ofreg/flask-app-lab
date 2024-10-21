@@ -40,7 +40,9 @@ def detail_post(id):
     post= posts[id-1]
     return render_template ("detail_post.html", post=post)
     
-
+@app.route('/resume')
+def resume():
+    return render_template("resume.html")
 
 if __name__ == "__main__":
     app.run()  # Launch built-in web server and run this Flask webapp, debug=True
