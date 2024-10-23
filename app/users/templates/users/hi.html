@@ -1,0 +1,42 @@
+
+{% extends "base.html" %}
+{% block title %} Greeting page {% endblock%}
+{% block content %}
+<div class="hi-head-banner">
+    <h1>Flask application</h1>
+</div>
+<nav class="hi-nav">  
+    <ul class="no-bullets"> 
+        <li>
+            <a href="{{ url_for('users.greetings',name='John',age=30) }}">Greet John</a>
+        </li>
+        <li>
+            <a href="{{ url_for('users.admin') }}">Admin</a>
+        </li>
+    </ul>
+</nav>
+    <h2 class="hi-normal-h2"> Hello :) </h2>
+    <h2 class="hi-h2">User: {{ name }} ! </h2>
+    
+
+    
+    {% if age %}
+    <p class="hi-p">Age: <span class="hi-correct-p"> {{ age }}</span></p>
+    {% else %}
+    <p class="hi-p">Age: <span class="hi-not-correct-p"> Age is unknown.</span></p>
+
+    {% endif %}
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+

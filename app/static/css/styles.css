@@ -7,39 +7,6 @@ body {
     padding: 0;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: white;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-}
-
-nav ul {
-        list-style-type: none;
-        padding: 0;
-        display: flex;
-        justify-content: space-around;
-        background-color: #333;
-    }
-
-    nav ul li {
-        display: inline;
-    }
-
-    nav ul li a {
-        text-decoration: none;
-        color: white;
-        padding: 14px 20px;
-        display: block;
-        transition: background-color 0.3s ease;
-    }
-    
-
-    nav ul li a:hover {
-        background-color: #575757;
-    }
 
     section h2 {
         color: #333;
@@ -57,17 +24,140 @@ nav ul {
         
     }
     
-    /* Стилізація списку навичок */
-    ul {
-        list-style-type: square;
-        padding-left: 20px;
+    .resume-nav .resume1-ul {
+        list-style-type: none;
+        padding: 0;
+        background-color: #ffffff;
+        width: 100%;
+    }
+    .resume-nav {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
     }
     
-    /* Стиль для зображення */
+    .resume-nav ul {
+        list-style-type: none; /* Зняти маркери */
+        padding: 0; /* Зняти відступи */
+        background-color: #333; /* Темний фон */
+        width: 100%; /* Ширина меню на всю сторінку */
+    }
+   
+    .resume-nav ul li {
+        margin: 10px 0; /* Вертикальні відступи між пунктами меню */
+    }
+    
+    .resume-nav ul li a {
+        text-decoration: none; /* Зняти підкреслення */
+        color: white; /* Білий текст */
+        padding: 12px 20px; /* Внутрішні відступи */
+        display: block; /* Кожне посилання займає всю ширину */
+        transition: background-color 0.3s ease; /* Ефект переходу для фону */
+    }
+    
+    .resume-nav nav ul li a:hover {
+        background-color: #575757; /* Колір фону при наведенні */
+    }
+    
+    /* Стиль для списків у резюме */
+    .resume-ul {
+        list-style-type: square; /* Квадратні маркери для списку */
+        padding-left: 20px; /* Внутрішні відступи зліва */
+    }
+    
     header img {
         max-width: 250px;
         border-radius: 50%;
         display: block;
         margin: 20px auto;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+
+
+
+
+
+
+
+
+/*
+
+    .hi-head-banner {
+        background-color: #333;
+        color: white;
+        text-align: center; 
+        padding: 10px 0; 
+        width: 100%; 
+    }
+
+    .hi-nav {
+         
+    }
+    
+    
+    .hi-nav ul {
+        list-style-type: none;
+        padding: 0;
+        display: flex;
+        justify-content: space-around;
+        background-color: #ffffff;
+    }
+    
+    .hi-nav ul li {
+        display: inline;
+    }
+    
+    .hi-nav ul li a {
+        text-decoration: none;
+        color: rgb(0, 0, 0);
+        padding: 14px 20px;
+        display: block;
+        transition: background-color 0.3s ease;
+    }
+    
+    */
+
+    .hi-nav a  {
+        padding-left: 40px;
+        text-decoration: none; 
+        color: inherit;
+    }
+    .hi-h2{
+        margin-left: 40px; 
+        
+       
+    }
+    .hi-normal-h2{
+        margin-left: 40px; 
+        font-weight: normal;
+    }
+    .hi-p{  
+        margin-left: 40px;  font-size: 24px;
+    }
+    .hi-not-correct-p{
+        
+        color: red;
+    }
+    .hi-correct-p{
+        
+        color: rgb(0, 255, 21);
+    }
+    .hi-head-banner {
+        background-color: #333;
+        color: white;
+        text-align: left; 
+        padding: 10px 0; 
+        padding-left: 40px;
+        width: 100%; 
+       /* max-width: 1200px;
+        margin: 0 auto;*/
+    }
+
+    .no-bullets {
+        list-style-type: none;
+        padding-left: 0;
     }
