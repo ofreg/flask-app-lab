@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %} Greeting Page {% endblock %}
+
+
+
+{% block content %}
+<h1> Hi, {{ username }}</h1>
+
+<a href="{{url_for('users.logout')}}"> logout</a>
+{% endblock %}
