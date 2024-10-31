@@ -2,10 +2,84 @@
 
 {% block title %} Greeting Page {% endblock %}
 
+{% block content %}{% if color_scheme == 'dark' %}
+<style>
+    body {
+        background-color: #333;
+        color: #fff;
+    }
+</style>
+{% else %}
+<style>
+    body {
+        background-color: #fff;
+        color: #000;
+    }
+</style>
+{% endif %}
 
-
-{% block content %}
 <h1> Hi, {{ username }}</h1>
 
-<a href="{{url_for('users.logout')}}"> logout</a>
+<a href="{{ url_for('users.logout') }}" class="btn btn-danger">Вийти</a>
+
+<!-- Форма для вибору кольорової схеми -->
+<div class="color-scheme-buttons">
+    <h2><b>Вибір кольорової схеми:</b></h2>
+    <form action="{{ url_for('users.set_color_scheme') }}" method="post">
+        <button type="submit" name="color_scheme" value="light" class="btn btn-light">Світла тема</button>
+        <button type="submit" name="color_scheme" value="dark" class="btn btn-dark">Темна тема</button>
+    </form>    
+</div>
+
+<form action="{{ url_for('users.set_cookie') }}" method="post">
+    <h2><b>Додати кукі:</b></h2>
+    <table>
+        <tr>
+            <td>Ключ кукі:</td>
+            <td>Значення кукі</td>
+            <td>Термін дії(сек)</td>
+        </tr>
+        <tr>
+            <td><input type="text" name="key_cookie" required></td>
+            <td><input type="text" name="value_cookie" required></td>
+            <td><input type="text" name="time_cookie" required></td>
+        </tr>
+    </table><br>
+    <button type="submit" class="btn btn-success">Додати кукі</button>
+</form>
+
+<form action="{{ url_for('users.delete_cookie') }}" method="post">
+    <h2><b>Видалити кукі за ключем:</b></h2>
+    <label for="value_delete_cookie">Ключ кукі для видалення:</label><br>
+    <input type="text" name="value_delete_cookie" required><br><br>
+    <button type="submit" class="btn btn-warning">Видалити кукі за ключем</button><br><br>
+</form>
+
+<form action="{{ url_for('users.delete_all_cookie') }}" method="post">
+    <h2><b>Видалити всі куки:</b></h2>
+    <button type="submit" class="btn btn-danger">Видалити всі куки</button>
+</form>
+
+<div class="container mt-5">
+    <h2>Список куків</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Ключ</th>
+                <th>Значення</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cookie_name, cookie_value in cookies.items() %}
+                {% if cookie_name != 'color_scheme' %}  {# Фільтруємо куку color_scheme #}
+                    <tr>
+                        <td>{{ cookie_name }}</td>
+                        <td>{{ cookie_value }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
 {% endblock %}
