@@ -19,13 +19,13 @@ def admin():
 @users_bp.route("/profile")
 def get_profile():
     if "username" in session:
-        cookies = request.cookies  # Отримуємо куки
+        cookies = request.cookies  
         username_value = session["username"]
         
         # Отримуємо кольорову схему з куків, значення за замовчуванням - 'light'
         color_scheme = request.cookies.get('color_scheme', 'light')  
         
-        return render_template("profile.html", username=username_value, cookies=cookies, color_scheme=color_scheme)  # Передаємо куки і кольорову схему
+        return render_template("profile.html", username=username_value, cookies=cookies, color_scheme=color_scheme)  
     flash("Сесія недійсна. Увійдіть знову.", "danger")
     return redirect(url_for("users.login"))
 
@@ -85,7 +85,7 @@ def delete_cookie():
     key = request.form.get('value_delete_cookie')  
     response = make_response(redirect(url_for('users.get_profile')))
     if key and key in request.cookies:
-        response.set_cookie(key, '', expires=0)  # Вказуємо шлях
+        response.set_cookie(key, '', expires=0)  
         flash(f'Кука "{key}" видалена!', 'success')  
     else:
         flash(f'Кука "{key}" не існує або ключ не вказано!', 'danger')  
