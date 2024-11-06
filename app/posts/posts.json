@@ -1,0 +1,56 @@
+[
+    {
+        "id": 1,
+        "title": "First Post",
+        "content": "This is the content of the first post.",
+        "category": "Technology",
+        "is_active": true,
+        "publication_date": "2024-11-05",
+        "author": "John"
+    },
+    {
+        "id": 2,
+        "title": "Second Post",
+        "content": "This is the content of the second post.",
+        "category": "Science",
+        "is_active": false,
+        "publication_date": "2024-11-03",
+        "author": "Jane"
+    },
+    {
+        "id": 3,
+        "title": "\u0430\u044b\u0432\u0430",
+        "content": "\u0430\u044b\u0432\u0430",
+        "author": "Anonymous",
+        "category": "General",
+        "is_active": true,
+        "publication_date": "2024-11-06"
+    },
+    {
+        "id": 4,
+        "title": "fsdfsf",
+        "content": "fsdfs",
+        "author": "Anonymous",
+        "category": "General",
+        "is_active": true,
+        "publication_date": "2024-11-06"
+    },
+    {
+        "id": 5,
+        "title": "fsdfsf",
+        "content": "fsdfs",
+        "author": "Anonymous",
+        "category": "General",
+        "is_active": true,
+        "publication_date": "2024-11-06"
+    },
+    {
+        "id": 6,
+        "title": "Python is cool",
+        "content": "Python is very cool and simply",
+        "author": "Anonymous",
+        "category": "General",
+        "is_active": true,
+        "publication_date": "2024-11-06"
+    }
+]

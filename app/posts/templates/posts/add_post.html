@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Add New Post</h2>
+
+<form method="POST" action="">
+    {{ form.hidden_tag() }}
+    {% from 'macros/form_macros.html' import render_field %}
+    {{ render_field(form.title) }}
+    {{ render_field(form.content) }}
+    <!--{{ render_field(form.is_active) }} -->
+    {{ render_field(form.publish_date) }}
+    {{ render_field(form.category) }}
+    <div class="form-group form-check">
+        {{ form.is_active(class="form-check-input") }}
+        {{ form.is_active.label(class="form-check-label") }}
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
+    </div>
+</form>
+{% endblock %}
