@@ -1,12 +1,25 @@
 {% extends "base.html" %}
-{% block title %} Posts {% endblock%}
+{% block title %}Posts{% endblock %}
 {% block content %}
-    <h1>Articles</h1>
-    <ul>
-    {% for post in posts%}
-        <li> {{post["id"]}} -  
-            <a href="{{ url_for('posts.detail_post',id= post['id']) }}">{{post["title"]}}</a>
-        </li>
-    {% endfor %}
-    </ul>
-    {% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+
+<div class="container">
+    <div class="row">
+        {% for post in posts %}
+        <div class="col-md-6 col-lg-4 mt-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Автор: {{ post.author }}</h6>
+                    <p class="card-text"><strong>Категорія:</strong> {{ post.category }}</p>
+                    <p class="card-text"><strong>Дата публікації:</strong> {{ post.publication_date }}</p>
+                    <p class="card-text"><strong>Вміст:</strong> {{ post.content }}</p>
+                    <a href="{{ url_for('posts.detail_post', id=post.id) }}" class="card-link">Читати далі</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
