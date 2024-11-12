@@ -2,7 +2,10 @@
 {% block title %}Posts{% endblock %}
 {% block content %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
-
+<!-- Кнопка для додавання посту -->
+<form action="{{ url_for('.add_post') }}" class="mb-4">
+    <button type="submit" class="btn btn-primary">Add post</button>
+</form>
 <div class="container">
     <div class="row">
         {% for post in posts %}
@@ -21,5 +24,6 @@
         {% endfor %}
     </div>
 </div>
+
 
 {% endblock %}

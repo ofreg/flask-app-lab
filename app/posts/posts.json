@@ -19,35 +19,8 @@
     },
     {
         "id": 3,
-        "title": "gsgdsgs",
+        "title": "Third Post",
         "content": "gsdhsdh",
-        "author": "Anonymous",
-        "category": "General",
-        "is_active": true,
-        "publication_date": "2024-11-06"
-    },
-    {
-        "id": 4,
-        "title": "fsdfsf",
-        "content": "fsdfs",
-        "author": "Anonymous",
-        "category": "General",
-        "is_active": true,
-        "publication_date": "2024-11-06"
-    },
-    {
-        "id": 5,
-        "title": "fsdfsf",
-        "content": "fsdfs",
-        "author": "Anonymous",
-        "category": "General",
-        "is_active": true,
-        "publication_date": "2024-11-06"
-    },
-    {
-        "id": 6,
-        "title": "Python is cool",
-        "content": "Python is very cool and simply",
         "author": "Anonymous",
         "category": "General",
         "is_active": true,
