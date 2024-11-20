@@ -1,15 +1,15 @@
-
 {% extends "base.html" %}
-{% block title %} Post {% endblock%}
+
+{% block title %}Post{% endblock %}
+
 {% block content %}
-
-
-
-
-    <h1>Post № {{ post["id"] }} - {{ post["title"] }} </h1>
-
-    <p>{{ post.get('content') }}</p> 
-    <a href="{{ url_for("posts.get_posts")}}">Return posts</a>
-
-
-    {% endblock %}
+    <h1>Post № {{ post.id }} - {{ post.title }}</h1>
+    <p><strong>Автор:</strong> {{ post.author }}</p>
+    <p><strong>Категорія:</strong> {{ post.category }}</p>
+    <p><strong>Дата публікації:</strong> {{ post.posted }}</p>
+    <p><strong>Вміст:</strong>{{ post.content }}</p>
+    <form action="{{ url_for('posts.delete_post', id=post.id) }}" method="POST" style="display:inline;">
+        <button type="submit" class="btn btn-danger">Delete Post</button>
+    </form>
+    <a href="{{ url_for('posts.get_posts') }}">Return to posts</a>
+{% endblock %}

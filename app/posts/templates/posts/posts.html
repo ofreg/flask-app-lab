@@ -20,7 +20,7 @@
                     <h5 class="card-title">{{ post.title }}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">Автор: {{ post.author }}</h6>
                     <p class="card-text"><strong>Категорія:</strong> {{ post.category }}</p>
-                    <p class="card-text"><strong>Дата публікації:</strong> {{ post.publication_date }}</p>
+                    <p class="card-text"><strong>Дата публікації:</strong> {{ post.posted.strftime('%Y-%m-%d %H:%M') }}</p>
                     <p class="card-text"><strong>Вміст:</strong> {{ post.content | truncate(23) }}</p>
                     <a href="{{ url_for('posts.detail_post', id=post.id) }}" class="card-link">Читати далі</a>
                 </div>
