@@ -4,10 +4,18 @@
 
 {% block content %}
     <h1>Post № {{ post.id }} - {{ post.title }}</h1>
-    <p><strong>Автор:</strong> {{ post.author }}</p>
+    <p><strong>Автор:</strong> {{ post.author.username }}</p>
     <p><strong>Категорія:</strong> {{ post.category }}</p>
     <p><strong>Дата публікації:</strong> {{ post.posted }}</p>
-    <p><strong>Вміст:</strong>{{ post.content }}</p>
+    <p><strong>Вміст:</strong> {{ post.content }}</p>
+    
+    <p><strong>Теги:</strong> 
+        {% for tag in post.tags %}
+            {{ tag.name }}
+            {% if not loop.last %} | {% endif %}
+        {% endfor %}
+    </p>
+
     <form action="{{ url_for('posts.delete_post', id=post.id) }}" method="POST" style="display:inline;">
         <button type="submit" class="btn btn-danger">Delete Post</button>
     </form>

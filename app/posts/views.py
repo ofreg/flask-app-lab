@@ -7,6 +7,8 @@ from datetime import datetime
 
 from .forms import PostForm
 from .models import Post
+from app.users.models import User
+from .models import Tag 
 from app import db
 from .utils import save_post, load_posts, get_post
 #posts = [
@@ -33,26 +35,47 @@ def detail_post(id):
 @post_bp.route('/add_post', methods=['GET', 'POST'])
 def add_post():
     form = PostForm()
+    authors = User.query.all()
+    form.author_id.choices = [(author.id, author.username) for author in authors]
 
     if form.validate_on_submit():
         title = form.title.data
         content = form.content.data
+        author = User.query.get(form.author_id.data)
+        
+        # Створюємо новий пост
         post_new = Post(
             title=title,
             content=content,
             posted=datetime.now(),  # Задаємо поточну дату публікації
             is_active=form.is_active.data,
             category=form.category.data,
-            author=form.author.data
+            author=author
         )
+        
+        # Отримуємо теги з форми
+        tags = Tag.query.filter(Tag.id.in_(form.tags.data)).all()
+
+        # Перевірка, чи є вибрані теги в базі даних
+        if not tags:
+            flash("The selected tags do not exist.", "danger")
+            return render_template("add_post.html", form=form)
+
+        # Додаємо теги до поста
+        post_new.tags.extend(tags)
+        
+        # Додаємо пост у базу даних
         db.session.add(post_new)
         db.session.commit()
+        
         flash(f'Post "{title}" added successfully!', 'success')
         return redirect(url_for('posts.get_posts'))  # Редирект на список постів після успішного додавання
+    
     elif form.errors:
         flash(f"Enter the correct data in the form!", "danger")
 
     return render_template("add_post.html", form=form)
+
 
 
 @post_bp.errorhandler(404)
