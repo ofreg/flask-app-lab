@@ -9,6 +9,7 @@ from flask_bcrypt import check_password_hash
 from app.users.models import User
 from app.users.forms import LoginForm
 from flask_login import login_user, logout_user, login_required, current_user, login_manager
+
 @users_bp.route("hi/<string:name>")   #/hi/ivan?age=45&q=fdfdf
 def greetings(name):
     name = name.upper()
@@ -56,6 +57,7 @@ def login():
         else:
             flash("Невірний email або пароль.", "danger")
     return render_template("login.html", form=form)
+
 
 @users_bp.route("/users_list")
 def users_list():
@@ -157,5 +159,5 @@ def register():
         db.session.add(new_user)
         db.session.commit()
         flash('Account created for {form.username.data}!',category='succes')
-        return redirect(url_for('login'))
+        return redirect(url_for('users.login'))
     return render_template('register.html',form=form, title='Register')

@@ -11,26 +11,16 @@
                     <h3>Увійти в систему</h3>
                 </div>
                 <div class="card-body">
-                    <form action="" method="post">
+                    <form method="POST" action="{{ url_for('users.login') }}">
+                        {{ form.hidden_tag() }}  <!-- Для CSRF захисту -->
+
                         <div class="form-group mb-3">
-                            <label for="login">Ім'я користувача:</label>
-                            <input 
-                                type="text" 
-                                name="login" 
-                                id="login" 
-                                class="form-control" 
-                                placeholder="Введіть ім'я користувача" 
-                                required>
+                            {{ form.email.label(class="form-label") }}
+                            {{ form.email(class="form-control", placeholder="Введіть ім'я користувача") }}
                         </div>
                         <div class="form-group mb-3">
-                            <label for="password">Пароль:</label>
-                            <input 
-                                type="password" 
-                                name="password" 
-                                id="password" 
-                                class="form-control" 
-                                placeholder="Введіть пароль" 
-                                required>
+                            {{ form.password.label(class="form-label") }}
+                            {{ form.password(class="form-control", placeholder="Введіть пароль") }}
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Увійти</button>
                     </form>
