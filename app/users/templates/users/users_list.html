@@ -1,0 +1,19 @@
+<!-- app/users/templates/users_list.html -->
+{% extends 'base.html' %}
+
+{% block title %}Список користувачів{% endblock %}
+
+{% block content %}
+    <h1>Список всіх зареєстрованих користувачів</h1>
+
+    {% if message %}
+        <p>{{ message }}</p>
+    {% else %}
+        <p>Кількість користувачів: {{ count }}</p>
+        <ul>
+            {% for user in users %}
+                <li>{{ user.username }} ({{ user.email }})</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
