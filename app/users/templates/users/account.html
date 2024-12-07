@@ -4,7 +4,63 @@
 
 {% block content %}
     <h1>Ваш профіль</h1>
-    <img src="{{ url_for('static', filename='profile_pics/' + (current_user.image_file or 'logo.jpg')) }}" alt="Фото профілю" width="150" height="150">
+
+    <!-- Відображення поточного фото профілю -->
+    <img src="{{ image_file }}" alt="Фото профілю" width="150" height="150">
+    
+    <!-- Виведення поточного імені користувача -->
     <p><strong>Ім'я користувача:</strong> {{ current_user.username }}</p>
+    
+    <!-- Виведення поточного email -->
     <p><strong>Email:</strong> {{ current_user.email }}</p>
+    
+    <!-- Виведення поточного опису користувача -->
+    <p><strong>Про себе:</strong> {{ current_user.about_me or 'Це поле порожнє.' }}</p>
+
+    <!-- Форма для оновлення профілю -->
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        
+        <!-- Поле для нового імені користувача -->
+        <div class="form-group">
+            {{ form.username.label(class="form-label") }}
+            {{ form.username(class="form-control") }}
+            {% for error in form.username.errors %}
+                <small class="form-text text-danger">{{ error }}</small>
+            {% endfor %}
+        </div>
+
+        <!-- Поле для нового email -->
+        <div class="form-group">
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control") }}
+            {% for error in form.email.errors %}
+                <small class="form-text text-danger">{{ error }}</small>
+            {% endfor %}
+        </div>
+
+        <!-- Поле для нового опису користувача -->
+        <div class="form-group">
+            {{ form.about_me.label(class="form-label") }}
+            {{ form.about_me(class="form-control") }}
+            {% for error in form.about_me.errors %}
+                <small class="form-text text-danger">{{ error }}</small>
+            {% endfor %}
+        </div>
+
+        <!-- Поле для завантаження нового фото -->
+        <div class="form-group">
+            {{ form.picture.label(class="form-label") }}
+            {{ form.picture(class="form-control-file") }}
+            {% for error in form.picture.errors %}
+                <small class="form-text text-danger">{{ error }}</small>
+            {% endfor %}
+        </div>
+
+        <!-- Кнопка для відправлення форми -->
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+
 {% endblock %}

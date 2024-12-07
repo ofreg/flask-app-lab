@@ -70,15 +70,34 @@ def users_list():
     return render_template("users_list.html", users=users, count=len(users))
 from flask_login import login_required, current_user
 from flask import render_template, flash
-@users_bp.route("/account")
+from app.users.forms import UpdateAccountForm
+@users_bp.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
-    # current_user надає доступ до поточного авторизованого користувача
-    return render_template(
-        "account.html",
-        username=current_user.username,
-        email=current_user.email
-    )
+    form = UpdateAccountForm()
+    if form.validate_on_submit():
+        if form.picture.data:  # Перевірка, чи є завантажене зображення
+            picture_file = save_picture(form.picture.data)
+            current_user.image_file = picture_file
+
+        # Оновлення полів
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        current_user.about_me = form.about_me.data  # Оновлення поля about_me
+        
+        db.session.commit()
+        flash('Ваш обліковий запис було успішно оновлено!', 'success')
+        return redirect(url_for('users.account'))
+    
+    # Попередньо заповнюємо форму поточними даними
+    form.username.data = current_user.username
+    form.email.data = current_user.email
+    form.about_me.data = current_user.about_me  # Заповнення поля about_me поточним значенням
+
+    # Зображення профілю
+    image_file = url_for('static', filename='profile_pics/' + (current_user.image_file if current_user.image_file else 'logo.jpg'))
+
+    return render_template('account.html', title='Account', image_file=image_file, form=form)
 
 
 @users_bp.route("/logout")
@@ -176,16 +195,19 @@ def register():
 
 import os
 import secrets
-from werkzeug.utils import secure_filename
+from PIL import Image
+from flask import current_app
 
 def save_picture(form_picture):
-    # Генерація унікального імені для фото
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
     picture_path = os.path.join(current_app.root_path, 'static/profile_pics', picture_fn)
 
-    # Збереження фото
-    form_picture.save(picture_path)
-    
+    # Зміна розміру зображення
+    output_size = (125, 125)
+    img = Image.open(form_picture)
+    img.thumbnail(output_size)
+    img.save(picture_path)
+
     return picture_fn
