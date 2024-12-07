@@ -1,5 +1,5 @@
 from . import users_bp
-from flask import render_template, abort, request, url_for,redirect, make_response, session,current_app
+from flask import render_template, abort, request, url_for,redirect, make_response, session, current_app
 from datetime import datetime, timedelta
 from flask import flash, Flask
 from app import bcrypt
@@ -39,7 +39,9 @@ def get_profile():
 
 from app.users.models import User  
 from app import db  
-  
+@current_app.route('/users')
+def account():
+    return render_template('account.html', username=current_user.username, email=current_user.email)
 
 @users_bp.route("/login", methods=['GET', 'POST'])
 def login():
@@ -145,19 +147,45 @@ def set_color_scheme():
 
 
 
-
-@users_bp.route("/register",methods=['GET','POST'])
+@users_bp.route("/register", methods=['GET', 'POST'])
 def register():
     from app.users.models import User
     form = RegistrationForm()
+    
     if form.validate_on_submit():
-        username= form.username.data
-        email=form.email.data
-        password=form.password.data
+        username = form.username.data
+        email = form.email.data
+        password = form.password.data
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-        new_user = User(username=username, email=email, password=hashed_password)
+        
+        # Обробка фото профілю
+        if form.profile_picture.data:
+            picture_file = save_picture(form.profile_picture.data)  # Зберігаємо фото
+        else:
+            picture_file = 'default.jpg'  # Якщо немає фото, використовуємо дефолтне
+
+        # Створення нового користувача
+        new_user = User(username=username, email=email, password=hashed_password, image_file=picture_file)  # Використовуємо image_file
         db.session.add(new_user)
         db.session.commit()
-        flash('Account created for {form.username.data}!',category='succes')
+        
+        flash(f'Account created for {form.username.data}!', category='success')
         return redirect(url_for('users.login'))
-    return render_template('register.html',form=form, title='Register')
+    
+    return render_template('register.html', form=form, title='Register')
+
+import os
+import secrets
+from werkzeug.utils import secure_filename
+
+def save_picture(form_picture):
+    # Генерація унікального імені для фото
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(current_app.root_path, 'static/profile_pics', picture_fn)
+
+    # Збереження фото
+    form_picture.save(picture_path)
+    
+    return picture_fn

@@ -4,6 +4,7 @@
 
 {% block content %}
     <h1>Ваш профіль</h1>
-    <p><strong>Ім'я користувача:</strong> {{ username }}</p>
-    <p><strong>Email:</strong> {{ email }}</p>
+    <img src="{{ url_for('static', filename='profile_pics/' + (current_user.image_file or 'logo.jpg')) }}" alt="Фото профілю" width="150" height="150">
+    <p><strong>Ім'я користувача:</strong> {{ current_user.username }}</p>
+    <p><strong>Email:</strong> {{ current_user.email }}</p>
 {% endblock %}

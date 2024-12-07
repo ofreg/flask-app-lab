@@ -7,7 +7,7 @@ Register
 {% block content %}
 <div class="container mt-4">
     <h1 class="text-center">Register</h1>
-    <form method="POST" action="">
+    <form method="POST" action="" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         
         <div class="form-group">
@@ -46,6 +46,17 @@ Register
             {% if form.confirm_password.errors %}
                 <div class="text-danger">
                     {{ form.confirm_password.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Поле для завантаження фото профілю -->
+        <div class="form-group">
+            {{ form.profile_picture.label(class="form-label") }}
+            {{ form.profile_picture(class="form-control") }}
+            {% if form.profile_picture.errors %}
+                <div class="text-danger">
+                    {{ form.profile_picture.errors[0] }}
                 </div>
             {% endif %}
         </div>

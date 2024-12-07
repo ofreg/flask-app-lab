@@ -2,13 +2,16 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, Regexp, ValidationError
 from app.users.models import User 
-
+from flask_wtf.file import FileField, FileAllowed 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(),Length(min=4,max=14),Regexp(r'^[a-zA-Z0-9_.-]+$', message="Недопустимі символи в username.")])
     email = StringField ('Email',validators=[DataRequired(),Email()])
     password = PasswordField('Password',validators=[DataRequired(), Length(min=6, message="Пароль має бути щонайменше 6 символів.")])
-    confirm_password = PasswordField('Confirm Password',validators=[DataRequired(), EqualTo('password', message="Паролі мають співпадати.")]
-    )
+    confirm_password = PasswordField('Confirm Password',validators=[DataRequired(), EqualTo('password', message="Паролі мають співпадати.")])
+    profile_picture = FileField('Profile Picture', validators=[
+        FileAllowed(['jpg', 'png'], 'Images only!')
+    ])
+    
 
     submit = SubmitField('Sign up')
 
@@ -27,3 +30,4 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password',validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
+

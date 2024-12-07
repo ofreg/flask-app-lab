@@ -7,11 +7,11 @@ from flask_login import current_user
 def main():
     return render_template("base.html")
 
-@current_app.route('/home', endpoint='home_page')
+@current_app.route('/home')
 def home():
     agent = request.user_agent
     return render_template("home.html", agent=agent)
 
-@current_app.route('/resume', endpoint='resume_page')
+@current_app.route('/resume')
 def resume():
     return render_template("resume.html")
