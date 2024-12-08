@@ -5,6 +5,13 @@ import secrets
 from flask import current_app
 from werkzeug.utils import secure_filename
 from datetime import datetime
+import pytz
+
+
+# Перетворення часу на UTC+2 (використовуємо Africa/Blantyre для UTC+2)
+
+utc_time = datetime.now(pytz.utc)
+utc_plus_2 = utc_time.astimezone(pytz.timezone('Africa/Blantyre'))
 class User(UserMixin, db.Model):
     __tablename__ = "users"
 
@@ -12,9 +19,9 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
-    image_file = db.Column(db.String(120), nullable=False, default='default.jpg')  # Розширення шляху до зображення
+    image_file = db.Column(db.String(120), nullable=False, default='images/logo.jpg')  # Розширення шляху до зображення
     about_me = db.Column(db.String(500))  
-    last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+    last_seen = db.Column(db.DateTime, default=datetime.now(pytz.utc)) 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
 

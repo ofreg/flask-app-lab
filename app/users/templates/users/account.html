@@ -17,6 +17,9 @@
     <!-- Виведення поточного опису користувача -->
     <p><strong>Про себе:</strong> {{ current_user.about_me or 'Це поле порожнє.' }}</p>
 
+    <!-- Виведення часу останнього входу -->
+    <p><strong>Останній вхід:</strong> {{ last_seen }}</p>
+
     <!-- Форма для оновлення профілю -->
     <form method="POST" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
@@ -56,7 +59,19 @@
                 <small class="form-text text-danger">{{ error }}</small>
             {% endfor %}
         </div>
-
+        <h2>Змінити пароль</h2>
+    <div class="form-group">
+        {{ change_password_form.old_password.label }}
+        {{ change_password_form.old_password(class="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ change_password_form.new_password.label }}
+        {{ change_password_form.new_password(class="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ change_password_form.confirm_password.label }}
+        {{ change_password_form.confirm_password(class="form-control") }}
+    </div>
         <!-- Кнопка для відправлення форми -->
         <div class="form-group">
             {{ form.submit(class="btn btn-primary") }}

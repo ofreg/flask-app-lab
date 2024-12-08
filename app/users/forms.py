@@ -37,6 +37,7 @@ class UpdateAccountForm(FlaskForm):
     username = StringField('Ім\'я користувача', validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
     picture = FileField('Оновити фото профілю', validators=[FileAllowed(['jpg', 'png'])])
+    about_me = StringField('About Me', validators=[Length(max=500)])
     submit = SubmitField('Оновити')
 
     def validate_username(self, username):
@@ -50,3 +51,13 @@ class UpdateAccountForm(FlaskForm):
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('Цей email вже зайнятий.')
+
+
+class ChangePasswordForm(FlaskForm):
+    old_password = PasswordField('Старий пароль', validators=[DataRequired()])
+    new_password = PasswordField('Новий пароль', validators=[
+        DataRequired(), Length(min=4)
+    ])
+    confirm_password = PasswordField('Підтвердження нового пароля', validators=[
+        DataRequired(), EqualTo('new_password', message='Паролі повинні співпадати')
+    ])

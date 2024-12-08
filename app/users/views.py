@@ -68,36 +68,67 @@ def users_list():
         return render_template("users_list.html", message="Немає зареєстрованих користувачів")
     
     return render_template("users_list.html", users=users, count=len(users))
-from flask_login import login_required, current_user
-from flask import render_template, flash
-from app.users.forms import UpdateAccountForm
+
+from datetime import datetime
+import pytz
+from app.users.forms import ChangePasswordForm, UpdateAccountForm
 @users_bp.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
     form = UpdateAccountForm()
+    change_password_form = ChangePasswordForm()  # Ініціалізуємо форму зміни пароля
+
+    # Оновлення часу останнього входу
+    current_user.last_seen = datetime.now(pytz.utc)  # Оновлюємо час останнього входу в UTC
+    db.session.commit()  # Зберігаємо зміни в базі
+
+    # Обробка форми на відправку
     if form.validate_on_submit():
         if form.picture.data:  # Перевірка, чи є завантажене зображення
             picture_file = save_picture(form.picture.data)
             current_user.image_file = picture_file
 
-        # Оновлення полів
+        # Оновлення полів користувача
         current_user.username = form.username.data
         current_user.email = form.email.data
-        current_user.about_me = form.about_me.data  # Оновлення поля about_me
-        
+        current_user.about_me = form.about_me.data
+
         db.session.commit()
         flash('Ваш обліковий запис було успішно оновлено!', 'success')
         return redirect(url_for('users.account'))
-    
-    # Попередньо заповнюємо форму поточними даними
+
+    # Обробка зміни пароля
+    if change_password_form.validate_on_submit():
+        if not check_password_hash(current_user.password, change_password_form.old_password.data):
+            flash('Невірний старий пароль.', 'danger')
+        else:
+            current_user.password = generate_password_hash(change_password_form.new_password.data)
+            db.session.commit()
+            flash('Ваш пароль було успішно змінено!', 'success')
+            return redirect(url_for('users.account'))
+
+    # Попереднє заповнення форми поточними даними
     form.username.data = current_user.username
     form.email.data = current_user.email
-    form.about_me.data = current_user.about_me  # Заповнення поля about_me поточним значенням
+    form.about_me.data = current_user.about_me
+
+    # Оновлення та відображення часу останнього входу
+    if current_user.last_seen:
+        if current_user.last_seen.tzinfo is None:
+            last_seen_utc = current_user.last_seen.replace(tzinfo=pytz.utc)
+        else:
+            last_seen_utc = current_user.last_seen
+
+        local_tz = pytz.timezone('Africa/Blantyre')  # Часова зона UTC+2
+        last_seen_local = last_seen_utc.astimezone(local_tz)
+        formatted_time = last_seen_local.strftime('%Y-%m-%d %H:%M:%S')
+    else:
+        formatted_time = 'Час не визначено'
 
     # Зображення профілю
     image_file = url_for('static', filename='profile_pics/' + (current_user.image_file if current_user.image_file else 'logo.jpg'))
 
-    return render_template('account.html', title='Account', image_file=image_file, form=form)
+    return render_template('account.html', title='Account', image_file=image_file, form=form, last_seen=formatted_time, change_password_form=change_password_form)
 
 
 @users_bp.route("/logout")
