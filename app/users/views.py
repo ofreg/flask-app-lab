@@ -5,7 +5,7 @@ from flask import flash, Flask
 from app import bcrypt
 from app import db
 from app.users.forms import RegistrationForm
-from flask_bcrypt import check_password_hash
+from flask_bcrypt import check_password_hash, generate_password_hash
 from app.users.models import User
 from app.users.forms import LoginForm
 from flask_login import login_user, logout_user, login_required, current_user, login_manager
@@ -39,9 +39,11 @@ def get_profile():
 
 from app.users.models import User  
 from app import db  
-@current_app.route('/users')
-def account():
-    return render_template('account.html', username=current_user.username, email=current_user.email)
+#@current_app.route('/users')
+#def account_detailis():
+#    form = UpdateAccountForm()  # Ініціалізуємо форму
+#    return render_template('account.html', username=current_user.username, email=current_user.email, form=form)
+
 
 @users_bp.route("/login", methods=['GET', 'POST'])
 def login():
@@ -129,6 +131,64 @@ def account():
     image_file = url_for('static', filename='profile_pics/' + (current_user.image_file if current_user.image_file else 'logo.jpg'))
 
     return render_template('account.html', title='Account', image_file=image_file, form=form, last_seen=formatted_time, change_password_form=change_password_form)
+from app.users.forms import UpdateAccountForm
+@users_bp.route('/update_profile', methods=['POST'])
+@login_required
+def update_profile():
+    form = UpdateAccountForm()
+    
+    if form.validate_on_submit():
+        # Оновлення даних профілю користувача
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        current_user.about_me = form.about_me.data
+
+        # Завантаження нового фото профілю
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)  # Реалізуйте `save_picture`
+            current_user.profile_image = picture_file
+
+        # Збереження змін у базу даних
+        db.session.commit()
+        flash('Ваш профіль оновлено!', 'success')
+        return redirect(url_for('users.account'))  # Повернення до сторінки профілю
+
+    # Якщо форма недійсна, повертаємо помилки
+    flash('Не вдалося оновити профіль. Перевірте дані.', 'danger')
+    return redirect(url_for('account'))
+from app.users.forms import ChangePasswordForm
+
+@users_bp.route('/change_password', methods=['POST'])
+@login_required
+def change_password():
+    form = ChangePasswordForm()
+
+    if form.validate_on_submit():
+        # Перевірка поточного пароля
+        if not check_password_hash(current_user.password, form.old_password.data):
+            flash('Неправильний поточний пароль.', 'danger')
+            return redirect(url_for('profile'))
+        
+        # Перевірка нового пароля та підтвердження
+        if form.new_password.data != form.confirm_password.data:
+            flash('Новий пароль і підтвердження не збігаються.', 'danger')
+            return redirect(url_for('profile'))
+        
+        # Оновлення пароля користувача
+        current_user.password = generate_password_hash(form.new_password.data)
+        db.session.commit()
+        flash('Ваш пароль успішно змінено!', 'success')
+        return redirect(url_for('users.get_profile'))
+    
+    # Якщо форма недійсна, повертаємо помилки
+    flash('Не вдалося змінити пароль. Перевірте введені дані.', 'danger')
+    return redirect(url_for('users.get_profile'))
+
+
+
+
+
+
 
 
 @users_bp.route("/logout")

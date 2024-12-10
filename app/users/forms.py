@@ -61,3 +61,4 @@ class ChangePasswordForm(FlaskForm):
     confirm_password = PasswordField('Підтвердження нового пароля', validators=[
         DataRequired(), EqualTo('new_password', message='Паролі повинні співпадати')
     ])
+    submit = SubmitField('Змінити пароль')  # Додано поле submit

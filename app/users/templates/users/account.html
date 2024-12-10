@@ -21,7 +21,7 @@
     <p><strong>Останній вхід:</strong> {{ last_seen }}</p>
 
     <!-- Форма для оновлення профілю -->
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data" action="{{ url_for('users.update_profile') }}">
         {{ form.hidden_tag() }}
         
         <!-- Поле для нового імені користувача -->
@@ -59,22 +59,35 @@
                 <small class="form-text text-danger">{{ error }}</small>
             {% endfor %}
         </div>
-        <h2>Змінити пароль</h2>
-    <div class="form-group">
-        {{ change_password_form.old_password.label }}
-        {{ change_password_form.old_password(class="form-control") }}
-    </div>
-    <div class="form-group">
-        {{ change_password_form.new_password.label }}
-        {{ change_password_form.new_password(class="form-control") }}
-    </div>
-    <div class="form-group">
-        {{ change_password_form.confirm_password.label }}
-        {{ change_password_form.confirm_password(class="form-control") }}
-    </div>
-        <!-- Кнопка для відправлення форми -->
+
+        <!-- Кнопка для оновлення профілю -->
         <div class="form-group">
             {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+
+    <h2>Змінити пароль</h2>
+
+    <!-- Форма для зміни пароля -->
+    <form method="POST" action="{{ url_for('users.change_password') }}">
+        {{ change_password_form.hidden_tag() }}
+        
+        <div class="form-group">
+            {{ change_password_form.old_password.label }}
+            {{ change_password_form.old_password(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ change_password_form.new_password.label }}
+            {{ change_password_form.new_password(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ change_password_form.confirm_password.label }}
+            {{ change_password_form.confirm_password(class="form-control") }}
+        </div>
+
+        <!-- Кнопка для зміни пароля -->
+        <div class="form-group">
+            {{ change_password_form.submit(class="btn btn-secondary") }}
         </div>
     </form>
 
