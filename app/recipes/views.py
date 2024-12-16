@@ -98,37 +98,37 @@ def edit_recipe(recipe_id):
 
     return render_template('recipe_edit.html', form=form, recipe=recipe, categories=categories)
 
-
 @recipes_bp.route('/add_recipe', methods=['GET', 'POST'])
+@login_required
 def add_recipe():
     form = RecipeForm()
+    categories = Category.query.all()  # Отримуємо всі категорії з БД
+
     if form.validate_on_submit():
         image_file = form.image.data
         image_filename = None
 
-        # Якщо є файл зображення
+        # Обробка зображення
         if image_file and allowed_file(image_file.filename):
             image_filename = secure_filename(image_file.filename)
             image_file.save(os.path.join(app.config['UPLOAD_FOLDER'], image_filename))
 
-        # Створюємо новий рецепт
+        # Додавання нового рецепту
         recipe = Recipe(
             name=form.name.data,
             description=form.description.data,
             cooking_time=form.cooking_time.data,
             ingredients=form.ingredients.data,
             category_id=form.category_id.data,
-            image_path=image_filename  # Зберігаємо ім'я зображення в БД
+            image_path=image_filename,
+            user_id=current_user.id  # Прив'язка до автора
         )
-        
+
         db.session.add(recipe)
         db.session.commit()
-        return redirect(url_for('recipe_detail', recipe_id=recipe.id))
+        return redirect(url_for('recipes.add_recipe'))
 
-    return render_template('add_recipe.html', form=form)
-
-
-
+    return render_template('add_recipe.html', form=form, categories=categories)
 
 
 
@@ -226,19 +226,66 @@ def recipe_account():
 
 
 from sqlalchemy.orm import joinedload
-
 @recipes_bp.route('/recipes', methods=['GET', 'POST'])
 def recipes_list():
     form = RecipeForm()
 
-    # Завантажуємо категорії в поле `SelectField` (якщо потрібно для форми)
+    # Завантажуємо категорії в поле `SelectField`
     form.category_id.choices = [(category.id, category.category_name) for category in Category.query.all()]
 
-    # Отримуємо всі рецепти з їх категоріями
-    all_recipes = Recipe.query.options(joinedload(Recipe.category)).all()
+    # Отримуємо параметри запиту для сортування та фільтрації
+    category_id = request.args.get('category_id')
+    sort_field = request.args.get('sort', 'name')  # Значення за замовчуванням - сортування за назвою
+
+    # Фільтрація рецептів за категорією (якщо обрана категорія)
+    query = Recipe.query.options(joinedload(Recipe.category))
+    if category_id:
+        query = query.filter(Recipe.category_id == category_id)
+
+    # Сортування рецептів за вибраним полем
+    if sort_field:
+        query = query.order_by(getattr(Recipe, sort_field))
+
+    # Отримуємо відфільтровані та відсортовані рецепти
+    all_recipes = query.all()
 
     # Повертаємо шаблон з рецептами
-    return render_template('all_recipes.html', form=form, recipes=all_recipes)
+    return render_template('all_recipes.html', form=form, recipes=all_recipes, sort_field=sort_field)
+
+
+
+
+from flask import render_template, redirect, url_for, flash, request
+from flask_login import current_user, login_required
+from .models import Recipe
+from . import recipes_bp
+
+@recipes_bp.route('/delete_recipe/<int:recipe_id>', methods=['POST'])
+@login_required
+def delete_recipe(recipe_id):
+    
+    recipe = Recipe.query.get_or_404(recipe_id)
+    
+    
+    if recipe.user_id != current_user.id:
+        flash('У вас немає прав на видалення цього рецепта.', 'danger')
+        return redirect(url_for('recipes.recipe_account'))
+    
+    # Видалити рецепт
+    try:
+        db.session.delete(recipe)
+        db.session.commit()
+        flash('Рецепт успішно видалено!', 'success')
+    except:
+        db.session.rollback()
+        flash('Виникла помилка при видаленні рецепта.', 'danger')
+    
+    return redirect(url_for('recipes.recipe_account'))
+
+
+
+
+
 
 
 

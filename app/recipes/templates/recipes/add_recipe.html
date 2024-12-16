@@ -1,0 +1,68 @@
+{% extends "main.html" %}
+
+{% block title %}Додати рецепт{% endblock %}
+
+{% block content %}
+<h1 class="text-center mb-4">Додати новий рецепт</h1>
+<form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+
+    <div class="mb-3">
+        {{ form.name.label(class="form-label") }}
+        {{ form.name(class="form-control", placeholder="Введіть назву рецепту") }}
+        {% if form.name.errors %}
+            <div class="text-danger">{{ form.name.errors[0] }}</div>
+        {% endif %}
+    </div>
+
+    <div class="mb-3">
+        {{ form.description.label(class="form-label") }}
+        {{ form.description(class="form-control", placeholder="Опишіть рецепт") }}
+        {% if form.description.errors %}
+            <div class="text-danger">{{ form.description.errors[0] }}</div>
+        {% endif %}
+    </div>
+
+    <div class="mb-3">
+        {{ form.cooking_time.label(class="form-label") }}
+        {{ form.cooking_time(class="form-control", placeholder="Час приготування (хвилини)") }}
+        {% if form.cooking_time.errors %}
+            <div class="text-danger">{{ form.cooking_time.errors[0] }}</div>
+        {% endif %}
+    </div>
+
+    <div class="mb-3">
+        {{ form.ingredients.label(class="form-label") }}
+        {{ form.ingredients(class="form-control", placeholder="Введіть інгредієнти через кому") }}
+        {% if form.ingredients.errors %}
+            <div class="text-danger">{{ form.ingredients.errors[0] }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="category_id">Категорія:</label>
+        <select name="category_id" id="category_id" class="form-control" required>
+            {% for category in categories %}
+                <option value="{{ category.id }}">
+                    {{ category.category_name }}
+                </option>
+            {% endfor %}
+        </select>
+        {% if form.category_id.errors %}
+            <div class="text-danger">{{ form.category_id.errors[0] }}</div>
+        {% endif %}
+    </div>
+    
+    
+
+    <div class="mb-3">
+        {{ form.image.label(class="form-label") }}
+        {{ form.image(class="form-control") }}
+        {% if form.image.errors %}
+            <div class="text-danger">{{ form.image.errors[0] }}</div>
+        {% endif %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Додати рецепт</button>
+</form>
+{% endblock %}

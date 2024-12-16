@@ -2,17 +2,38 @@
 
 {% block content %}
 <div class="container mt-4">
+    
+    <div class="text-center mb-4">
+        <a href="{{ url_for('recipes.add_recipe') }}" class="btn btn-success btn-lg">Додати рецепт</a>
+    </div>
+    
     <h1 class="text-center mb-4">Рецепти</h1>
 
-    <!-- Виведення рецептів у вигляді карток -->
+    
+    <form method="GET" action="{{ url_for('recipes.recipes_list') }}" class="d-flex mb-4">
+        <select name="category_id" class="form-select me-2">
+            <option value="">Виберіть категорію</option>
+            {% for category in form.category_id.choices %}
+                <option value="{{ category[0] }}" {% if category[0] == request.args.get('category_id') %}selected{% endif %}>{{ category[1] }}</option>
+            {% endfor %}
+        </select>
+        
+        <select name="sort" class="form-select me-2">
+            <option value="name" {% if sort_field == 'name' %}selected{% endif %}>За назвою</option>
+            <option value="cooking_time" {% if sort_field == 'cooking_time' %}selected{% endif %}>За часом приготування</option>
+            <option value="id" {% if sort_field == 'id' %}selected{% endif %}>За ID</option>
+        </select>
+
+        <button type="submit" class="btn btn-primary">Застосувати</button>
+    </form>
+
+    
     <div class="row">
         {% for recipe in recipes %}
         <div class="col-md-4 col-lg-3 mb-4">
             <div class="card shadow-sm h-100">
-                <!-- Перевірка наявності зображення -->
+                
                 <img src="{{ url_for('recipes.static', filename=(recipe.image_path if recipe.image_path else 'uploads/default.jpeg')) }}" class="card-img-top" alt="{{ recipe.name }}">
-
-
 
                 <div class="card-body">
                     <h5 class="card-title">{{ recipe.name }}</h5>
