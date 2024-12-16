@@ -1,0 +1,49 @@
+{% extends "main.html" %}
+
+{% block content %}
+  <div class="edit-recipe">
+    <h1>Редагувати Рецепт: {{ recipe.name }}</h1>
+    
+    <form method="POST" enctype="multipart/form-data">
+      {{ form.hidden_tag() }} <!-- Для захисту від CSRF атак -->
+      
+      <div class="form-group">
+        <label for="name">Назва рецепту:</label>
+        <input type="text" name="name" id="name" value="{{ recipe.name }}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="category_id">Категорія:</label>
+        <select name="category_id" id="category_id" required>
+          {% for category in categories %}
+            <option value="{{ category.id }}" {% if category.id == recipe.category_id %}selected{% endif %}>
+              {{ category.category_name }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Опис:</label>
+        <textarea name="description" id="description" required>{{ recipe.description }}</textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="cooking_time">Час приготування (в хвилинах):</label>
+        <input type="number" name="cooking_time" id="cooking_time" value="{{ recipe.cooking_time }}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="ingredients">Інгредієнти (через кому):</label>
+        <textarea name="ingredients" id="ingredients" required>{{ recipe.ingredients }}</textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="image">Зображення (необов'язково):</label>
+        <input type="file" name="image" id="image">
+      </div>
+
+      <button type="submit">Оновити Рецепт</button>
+    </form>
+  </div>
+{% endblock %}

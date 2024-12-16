@@ -1,0 +1,49 @@
+{% extends 'main.html' %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h1>Редагувати рецепт</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
+
+      <div class="form-group">
+        <label for="name">Назва рецепту</label>
+        {{ form.name(class="form-control", id="name") }}
+      </div>
+
+      <div class="form-group">
+        <label for="description">Опис</label>
+        {{ form.description(class="form-control", id="description") }}
+      </div>
+
+      <div class="form-group">
+        <label for="cooking_time">Час приготування (хвилини)</label>
+        {{ form.cooking_time(class="form-control", id="cooking_time") }}
+      </div>
+
+      <div class="form-group">
+        <label for="ingredients">Інгредієнти</label>
+        {{ form.ingredients(class="form-control", id="ingredients") }}
+      </div>
+
+      <div class="form-group">
+        <label for="category_id">Категорія</label>
+        <select class="form-control" id="category_id" name="category_id">
+          {% for category in categories %}
+            <option value="{{ category.id }}" {% if category.id == recipe.category_id %}selected{% endif %}>
+              {{ category.category_name }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="image">Фото рецепту</label>
+        {{ form.image(class="form-control-file", id="image") }}
+      </div>
+
+      <button type="submit" class="btn btn-primary">Оновити рецепт</button>
+    </form>
+  </div>
+{% endblock %}

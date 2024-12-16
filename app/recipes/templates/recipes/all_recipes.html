@@ -1,0 +1,29 @@
+{% extends "main.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Рецепти</h1>
+
+    <!-- Виведення рецептів у вигляді карток -->
+    <div class="row">
+        {% for recipe in recipes %}
+        <div class="col-md-4 col-lg-3 mb-4">
+            <div class="card shadow-sm h-100">
+                <!-- Перевірка наявності зображення -->
+                <img src="{{ url_for('recipes.static', filename=(recipe.image_path if recipe.image_path else 'uploads/default.jpeg')) }}" class="card-img-top" alt="{{ recipe.name }}">
+
+
+
+                <div class="card-body">
+                    <h5 class="card-title">{{ recipe.name }}</h5>
+                    <p class="card-text text-truncate" style="max-width: 100%;">{{ recipe.description }}</p>
+                </div>
+                <div class="card-footer text-muted">
+                    <small>Категорія: <strong>{{ recipe.category.category_name }}</strong></small>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "main.html" %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1 class="text-center mb-4">Реєстрація користувача</h1>
+                <form method="POST" action="{{ url_for('recipes.register') }}" class="shadow-lg p-4 rounded bg-light" enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="form-group mb-3">
+                        {{ form.name.label(class="form-label") }}
+                        {{ form.name(class="form-control", placeholder="Введіть ім’я") }}
+                    </div>
+
+                    <div class="form-group mb-3">
+                        {{ form.email.label(class="form-label") }}
+                        {{ form.email(class="form-control", placeholder="Введіть ваш email") }}
+                    </div>
+
+                    <div class="form-group mb-3">
+                        {{ form.password.label(class="form-label") }}
+                        {{ form.password(class="form-control", placeholder="Введіть пароль") }}
+                    </div>
+
+                    <div class="form-group mb-3">
+                        {{ form.confirm_password.label(class="form-label") }}
+                        {{ form.confirm_password(class="form-control", placeholder="Підтвердження пароля") }}
+                    </div>
+
+                    <!-- Додаємо поле для фото -->
+                    <div class="form-group mb-3">
+                        <label for="photo" class="form-label">Фото профілю</label>
+                        <input type="file" name="photo" id="photo" class="form-control">
+                    </div>
+
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary w-100">Зареєструватися</button>
+                    </div>
+                </form>
+                <div class="text-center mt-3">
+                    <p>Вже маєте акаунт? <a href="{{ url_for('recipes.login') }}">Увійти</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

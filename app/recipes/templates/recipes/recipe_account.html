@@ -1,0 +1,57 @@
+{% extends "main.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center">Мій аккаунт</h1>
+
+    <!-- Інформація про користувача -->
+    <div class="row">
+        <div class="col-md-4">
+            <h3>Інформація про користувача</h3>
+            <p><strong>Ім'я:</strong> {{ user.name }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            {% if user.image_path %}
+            <img src="{{ url_for('static', filename='uploads/' + user.image_path) }}" class="img-fluid rounded-circle" alt="Фото користувача">
+            {% else %}
+            <img src="{{ url_for('static', filename='default.jpeg') }}" class="img-fluid rounded-circle" alt="Фото користувача">
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Список рецептів користувача -->
+    <h3 class="mt-4">Мої рецепти</h3>
+    {% if recipes %}
+    <div class="row">
+        {% for recipe in recipes %}
+        <div class="col-md-4" style="width: 27%;">
+            <div class="card mb-4">
+                {% if recipe.image_path %}
+                <img src="{{ url_for('recipes.static', filename=recipe.image_path) }}" alt="Recipe Image" style="width: 100%; height: auto;">
+                {% else %}
+                <img src="{{ url_for('static', filename='default.jpeg') }}" class="card-img-top" alt="Фото рецепту">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ recipe.name }}</h5>
+                    <p class="card-text">{{ recipe.description[:100] }}...</p>
+                    <p><small>Категорія: {{ recipe.category.category_name }}</small></p>
+                    <div class="d-flex justify-content-between">
+                        <!-- Кнопка редагувати -->
+                        <a href="{{ url_for('recipes.edit_recipe', recipe_id=recipe.id) }}" class="btn btn-primary btn-sm">Редагувати</a>
+                        
+                        <!-- Кнопка видалити -->
+                        <form action="{{ url_for('recipes.delete_recipe', recipe_id=recipe.id) }}" method="POST" style="display:inline;">
+                            {{ form.hidden_tag() }}
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Ви впевнені, що хочете видалити цей рецепт?')">Видалити</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>Немає рецептів для відображення.</p>
+{% endif %}
+
+</div>
+{% endblock %}

@@ -6,7 +6,7 @@ from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 from datetime import datetime
 from flask_login import current_user
-
+import os
 class Base(DeclarativeBase):
     pass
 
@@ -22,10 +22,13 @@ def create_app(config_name="config"):
     db.init_app(app)
     migrate.init_app(app,db)
     login_manager.init_app(app)
-    
+        
 
   
     with app.app_context():
+        app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'app/recipes/static/uploads')
+        
+        from .recipes.models import Category, Recipe
         login_manager.login_view = "users.login"  # Де маршрут для входу
         login_manager.login_message = "Будь ласка, увійдіть, щоб отримати доступ до цієї сторінки."
         login_manager.login_message_category = "info"
@@ -33,7 +36,9 @@ def create_app(config_name="config"):
         from .users.models import User
         from .posts import post_bp
         from .users import users_bp
+        from .recipes import recipes_bp
         app.register_blueprint(post_bp)
         app.register_blueprint(users_bp, url_prefix="/users")
+        app.register_blueprint(recipes_bp, url_prefix="/recipes")
         #from app.posts.models import
     return app

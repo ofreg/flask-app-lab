@@ -1,0 +1,24 @@
+{% extends "main.html" %}
+
+{% block content %}
+  <div class="recipe-detail">
+    <h1>{{ recipe.name }}</h1>
+    <h2>Категорія: {{ recipe.category.category_name }}</h2>
+    <p><strong>Час приготування:</strong> {{ recipe.cooking_time }} хвилин</p>
+    <p><strong>Інгредієнти:</strong></p>
+    <ul>
+      {% for ingredient in recipe.ingredients.split(',') %}
+        <li>{{ ingredient }}</li>
+      {% endfor %}
+    </ul>
+    <p><strong>Опис:</strong> {{ recipe.description }}</p>
+
+    {% if recipe.image_path %}
+    
+    <img src="{{ url_for('recipes.static', filename=recipe.image_path) }}" alt="Recipe Image" style="max-width: 100%; height: 250px;">
+    
+
+
+    {% endif %}
+  </div>
+{% endblock %}
